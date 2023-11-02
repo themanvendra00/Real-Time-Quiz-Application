@@ -1,0 +1,34 @@
+{
+  "questions": [
+    {
+      "question": "Javascript is an _______ language?",
+      "choices": ["Object-Oriented", "Object-Based", "Procedural", "None of the above"],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Which of the following keywords is used to define a variable in Javascript?",
+      "choices": ["var", "let", "Both A and B", "None of the above"],
+      "correctAnswer": 2
+    },
+    {
+      "question": "Which of the following methods is used to access HTML elements using Javascript?",
+      "choices": [
+        "getElementbyId()",
+        "getElementsByClassName()",
+        "Both A and B",
+        "None of the above"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "Which of the following methods can be used to display data in some form using Javascript?",
+      "choices": [
+        "document.write()",
+        "console.log()",
+        "window.alart()",
+        "All of the above"
+      ],
+      "correctAnswer": 3
+    }
+  ]
+}
