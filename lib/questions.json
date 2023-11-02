@@ -2,7 +2,12 @@
   "questions": [
     {
       "question": "Javascript is an _______ language?",
-      "choices": ["Object-Oriented", "Object-Based", "Procedural", "None of the above"],
+      "choices": [
+        "Object-Oriented",
+        "Object-Based",
+        "Procedural",
+        "None of the above"
+      ],
       "correctAnswer": 0
     },
     {
@@ -32,12 +37,7 @@
     },
     {
       "question": "When an operators value is NULL, the typeof returned by the unary operator is:",
-      "choices": [
-        "Boolean",
-        "Undefined",
-        "Object",
-        "Interger"
-      ],
+      "choices": ["Boolean", "Undefined", "Object", "Interger"],
       "correctAnswer": 2
     }
   ]
