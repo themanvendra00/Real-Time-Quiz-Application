@@ -31,14 +31,14 @@
       "correctAnswer": 3
     },
     {
-      "question": "When an operator’s value is NULL, the typeof returned by the unary operator is:",
+      "question": "When an operators value is NULL, the typeof returned by the unary operator is:",
       "choices": [
         "Boolean",
         "Undefined",
         "Object",
         "Interger"
       ],
-      "correctAnswer": 3
+      "correctAnswer": 2
     }
   ]
 }
