@@ -2,7 +2,6 @@
 
 Quizify is a real-time quiz application that allows users to engage in a fun and competitive quiz game. This repository contains the source code for Quizify, and it's built using a combination of HTML, CSS, Bootstrap, jQuery, Node.js, Express, and Socket.io.
 
-## [Walk through video](https://drive.google.com/file/d/1ZIpHNwz_mPbMCH9Y07Wy5f0vgtK2f3x-/view?usp=sharing)
 
 ## Getting Started
 
