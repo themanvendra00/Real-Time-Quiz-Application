@@ -13,8 +13,8 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script>
-      // var socket = io.connect("https://quizify-vw7t.onrender.com/");
-      var socket = io.connect("http://localhost:3000/");
+      var socket = io.connect("https://quizify-vw7t.onrender.com/");
+      // var socket = io.connect("http://localhost:3000/");
       var i,
         username,
         j = 0,
@@ -149,7 +149,7 @@
             socket.emit("addClient", username);
           } else {
             alert("USERNAME PLEASE!");
-            window.location = "http://localhost:3000/";
+            window.location = "https://quizify-vw7t.onrender.com/";
           }
         });
       });
@@ -297,7 +297,7 @@
           win: finalresults,
         };
         saveBtn.innerText = "Saving...";
-        await fetch("http://localhost:3000/save", {
+        await fetch("https://quizify-vw7t.onrender.com/save", {
           method: "POST",
           body: JSON.stringify(obj),
           headers: {
