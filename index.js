@@ -1,7 +1,9 @@
 const express = require("express");
+const cors = require("cors");
 const connection = require("./config/db");
 const app = express();
 app.use(express.json());
+app.use(cors());
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 const fs = require("fs");
@@ -61,13 +63,13 @@ io.sockets.on("connection", function (socket) {
             players,
             player1Score: p1Score,
             player2Score: p2Score,
-            winner:winStats,
+            winner: winStats,
           });
           await stats.save();
           res.send({ message: "stats save succsessfully" });
         } catch (error) {
           console.log(error);
-          res.send("Internal Error");
+          res.send({ err: "Internal Error" });
         }
       });
     }
@@ -112,6 +114,16 @@ io.sockets.on("connection", function (socket) {
     io.sockets.emit("updateusers", usernames);
     socket.leave(socket.room);
   });
+});
+
+app.get("/viewstats", async (req, res) => {
+  try {
+    let statsData = await UserScore.find({});
+    res.send({ result: statsData });
+  } catch (error) {
+    console.log("Error while fetching game stats", error);
+    res.send({ err: "Internal Error" });
+  }
 });
 
 server.listen(PORT, async () => {

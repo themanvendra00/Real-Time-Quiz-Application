@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./public/stylesheets/viewStats.css" />
+    <title>Game Stats | Quizify</title>
+  </head>
+  <body>
+    <header><h1>Game Stats</h1></header>
+    <div id="controls" class="flex">
+      <a href="https://quizify-vw7t.onrender.com/"><button>Play Again</button></a>
+      <a href="./viewStats.html"><button>Refresh</button></a>
+    </div>
+    <div id="stats">
+      <table id="statsTable">
+        <thead>
+          <th>Room</th>
+          <th>Players</th>
+          <th>P1 Scores</th>
+          <th>P2 Scores</th>
+          <th>Winner</th>
+        </thead>
+        <tbody id="statsData"></tbody>
+      </table>
+    </div>
+
+    <script>
+      let tbody = document.getElementById("statsData");
+      fetch("https://quizify-vw7t.onrender.com/viewstats")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          data = data.result;
+          tbody.innerHTML = "";
+          data.forEach((row) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+        <td>${row.room}</td>
+        <td><b>${row.players.player1}</b> <i>Vs</i> ${row.players.player2}</td>
+        <td>${row.player1Score}</td>
+        <td>${row.player2Score}</td>
+        <td>${row.winner}</td>
+      `;
+            tbody.appendChild(tr);
+          });
+        })
+        .catch((error) => console.error("Error:", error));
+    </script>
+  </body>
+</html>

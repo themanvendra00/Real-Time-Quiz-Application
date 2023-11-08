@@ -91,9 +91,6 @@
               if (response) {
                 if (j == 1) {
                   socket.emit("result", username, user_id);
-                  // console.log("correct ans");
-                  // console.log(username);
-                  // console.log("value of inner j: " + j);
                   $(".current_res_c").fadeIn().delay(800).fadeOut();
                   j++;
                 }
@@ -135,10 +132,6 @@
           $("#finalresult").text("Tie!");
           finalresults = "Tie";
         }
-
-        // gameStats.userName = username;
-        // gameStats.points = scoreArr;
-        // console.log(gameStats);
       });
 
       $(document).ready(function () {
@@ -283,6 +276,7 @@
       <br />
       <p>Click on "Save Stats" to save your points to the database.</p>
       <button id="saveStats">Save Stats</button>
+      <button id="redirect">View Stats</button>
       <div>
         <a href="https://quizify-vw7t.onrender.com/">Play Again...</a>
       </div>
@@ -290,6 +284,7 @@
 
     <script>
       const saveBtn = document.querySelector("#saveStats");
+      const redirectBtn = querySelector("#redirect");
       saveBtn.addEventListener("click", async () => {
         const obj = {
           p1: myscore,
@@ -308,6 +303,10 @@
           .then((data) => console.log(data));
         saveBtn.innerText = "Saved";
       });
+
+      redirectBtn.addEventListener("click",()=>{
+        window.location.href = "./viewStats.html"
+      })
     </script>
   </body>
 </html>
