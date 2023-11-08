@@ -13,7 +13,8 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script>
-      var socket = io.connect("https://quizify-vw7t.onrender.com/");
+      // var socket = io.connect("https://quizify-vw7t.onrender.com/");
+      var socket = io.connect("http://localhost:3000/");
       var i,
         username,
         j = 0,
@@ -22,6 +23,8 @@
         finalresults,
         ti,
         user_id;
+
+      let gameStats = {};
 
       socket.on("updatechat", function (username, data, id) {
         $("#conversation").append("<br>" + data + "<br>");
@@ -74,7 +77,7 @@
                 }
               }, 1000);
             });
-            
+
             //timer
 
             $("#realtime button").removeClass("btn disabled");
@@ -88,9 +91,9 @@
               if (response) {
                 if (j == 1) {
                   socket.emit("result", username, user_id);
-                  console.log("correct ans");
-                  console.log(username);
-                  console.log("value of inner j: " + j);
+                  // console.log("correct ans");
+                  // console.log(username);
+                  // console.log("value of inner j: " + j);
                   $(".current_res_c").fadeIn().delay(800).fadeOut();
                   j++;
                 }
@@ -124,11 +127,18 @@
 
         if (myscore > otherscore) {
           $("#finalresult").text("You Win!");
+          finalresults = "Player1";
         } else if (myscore < otherscore) {
           $("#finalresult").text("You Lose..");
+          finalresults = "Player2";
         } else {
           $("#finalresult").text("Tie!");
+          finalresults = "Tie";
         }
+
+        // gameStats.userName = username;
+        // gameStats.points = scoreArr;
+        // console.log(gameStats);
       });
 
       $(document).ready(function () {
@@ -139,7 +149,7 @@
             socket.emit("addClient", username);
           } else {
             alert("USERNAME PLEASE!");
-            window.location = "https://quizify-vw7t.onrender.com/";
+            window.location = "http://localhost:3000/";
           }
         });
       });
@@ -169,21 +179,29 @@
     <div class="row">
       <div class="col-md-12 text-center">
         <div class="rules" style="display: none">
-          <h2 class="mb-5">
-            The game will start in 10 seconds....
-          </h2>
+          <h2 class="mb-5">The game will start in 10 seconds....</h2>
           <div class="panel panel-success">
             <div class="panel-heading">
               <h3 class="panel-title">Rules</h3>
             </div>
             <div class="panel-body">
               <ul style="text-align: left">
-                <li>The objective of the game is to answer a series of quiz questions correctly and earn points.</li>
                 <li>
-                  The game is designed for two players per room. You will be matched with another player in a room.
+                  The objective of the game is to answer a series of quiz
+                  questions correctly and earn points.
                 </li>
-                <li>Each player will receive quiz questions one by one. There is a 10-second time limit to answer each question.</li>
-                <li>You earn 10 points for each correct answer. The player with the highest score at the end of the game wins.</li>
+                <li>
+                  The game is designed for two players per room. You will be
+                  matched with another player in a room.
+                </li>
+                <li>
+                  Each player will receive quiz questions one by one. There is a
+                  10-second time limit to answer each question.
+                </li>
+                <li>
+                  You earn 10 points for each correct answer. The player with
+                  the highest score at the end of the game wins.
+                </li>
               </ul>
             </div>
           </div>
@@ -263,9 +281,33 @@
     <div id="finalresult_show" style="display: none">
       <div id="finalresult">Tie</div>
       <br />
+      <p>Click on "Save Stats" to save your points to the database.</p>
+      <button id="saveStats">Save Stats</button>
       <div>
         <a href="https://quizify-vw7t.onrender.com/">Play Again...</a>
       </div>
     </div>
+
+    <script>
+      const saveBtn = document.querySelector("#saveStats");
+      saveBtn.addEventListener("click", async () => {
+        const obj = {
+          p1: myscore,
+          p2: otherscore,
+          win: finalresults,
+        };
+        saveBtn.innerText = "Saving...";
+        await fetch("http://localhost:3000/save", {
+          method: "POST",
+          body: JSON.stringify(obj),
+          headers: {
+            "Content-type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => console.log(data));
+        saveBtn.innerText = "Saved";
+      });
+    </script>
   </body>
 </html>

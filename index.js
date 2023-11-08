@@ -1,9 +1,12 @@
-var express = require("express");
-var app = express();
-var server = require("http").createServer(app);
-var io = require("socket.io")(server);
-var fs = require("fs");
+const express = require("express");
+const connection = require("./config/db");
+const app = express();
+app.use(express.json());
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
+const fs = require("fs");
 
+const { UserScore } = require("./model/userScores");
 const PORT = process.env.PORT || 3000;
 
 app.use("/", express.static(__dirname + "/public"));
@@ -21,7 +24,6 @@ app.get("/", function (req, res) {
 });
 
 io.sockets.on("connection", function (socket) {
-
   socket.on("addClient", function (username) {
     socket.username = username;
     usernames[username] = username;
@@ -32,13 +34,42 @@ io.sockets.on("connection", function (socket) {
       id = Math.round(Math.random() * 1000000);
       socket.room = id;
       pairCount = 1;
-      console.log(pairCount + " " + id);
+      // console.log(pairCount + " " + id);
       socket.join(id);
       pgmstart = 1;
     } else if (pairCount === 2) {
-      console.log(pairCount + " " + id);
+      // console.log(pairCount + " " + id);
       socket.join(id);
       pgmstart = 2;
+
+      players = {};
+      count = 1;
+
+      for (const key in usernames) {
+        const newKey = "player" + count;
+        players[newKey] = usernames[key];
+        count++;
+      }
+
+      app.post("/save", async (req, res) => {
+        try {
+          const p1Score = req.body.p1;
+          const p2Score = req.body.p2;
+          const winStats = req.body.win;
+          const stats = await UserScore({
+            room: id,
+            players,
+            player1Score: p1Score,
+            player2Score: p2Score,
+            winner:winStats,
+          });
+          await stats.save();
+          res.send({ message: "stats save succsessfully" });
+        } catch (error) {
+          console.log(error);
+          res.send("Internal Error");
+        }
+      });
     }
 
     socket.emit(
@@ -84,6 +115,11 @@ io.sockets.on("connection", function (socket) {
 });
 
 server.listen(PORT, async () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log("Connection Established !");
+  try {
+    await connection;
+    console.log("Connected to db!");
+    console.log(`Server is running on port ${PORT}`);
+  } catch (error) {
+    console.log("Error while connectiong to db!");
+  }
 });
